@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartConverter", "ChartConverter\ChartConverter.csproj", "{64A342D8-9D80-4638-BB6A-7AAE3168551B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartConverterLib", "ChartConverterLib\ChartConverterLib.csproj", "{9C627FD8-1BA0-4E3C-A149-7093CE809731}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64A342D8-9D80-4638-BB6A-7AAE3168551B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A342D8-9D80-4638-BB6A-7AAE3168551B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A342D8-9D80-4638-BB6A-7AAE3168551B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A342D8-9D80-4638-BB6A-7AAE3168551B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C627FD8-1BA0-4E3C-A149-7093CE809731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C627FD8-1BA0-4E3C-A149-7093CE809731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C627FD8-1BA0-4E3C-A149-7093CE809731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C627FD8-1BA0-4E3C-A149-7093CE809731}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56CF0A91-8203-4A7D-A249-06A5FBDC2A7D}
+	EndGlobalSection
+EndGlobal
