@@ -70,6 +70,7 @@ namespace ChartConverterLib
                 {
                     // This should mean it only has 1 space in it, which would be directly after "#hs"
                     currentParameters.Scroll = float.Parse(lines[i].Remove(0, "#hs ".Length));
+                    measureParameters.Scroll = currentParameters.Scroll;
                 }
                 else if (lines[i].StartsWith("#bpm ") && lines[i].LastIndexOf(" ") == "#bpm".Length)
                 {
