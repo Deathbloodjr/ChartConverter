@@ -422,6 +422,8 @@ namespace ChartConverterLib
             }
 
             // Offset
+            // offset = RealTime - (240000/BPM)
+            // RealTime = offset + (240000/BPM)
             //offset += (240000 / previousBpm) + ((240000 / previousBpm) * (measure.MeasureTop / measure.MeasureBottom)) - (240000 / measure.BPM);
             tmpBytes = BitConverter.GetBytes(offset);
             for (int i = 0; i < tmpBytes.Length; i++)
@@ -490,6 +492,8 @@ namespace ChartConverterLib
                     if ((MeasureParametersChanged(measure.Notes[i - 1], measure.Notes[i])) || splitMeasure)
                     {
                         // This measure has to end, start the next one
+                        // offset = RealTime - (240000/BPM)
+                        // RealTime = offset + (240000/BPM)
                         offset += ((240000 / measure.Notes[startIndex].BPM) + ((240000 / measure.Notes[startIndex].BPM) * ((measure.MeasureTop / (float)measure.MeasureBottom) * ((i - startIndex) / (float)measure.Notes.Count))) - (240000 / nextBPM));
                         
                         for (int k = 0; k < 2; k++)

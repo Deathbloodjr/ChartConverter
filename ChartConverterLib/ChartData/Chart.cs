@@ -14,6 +14,8 @@ namespace ChartConverterLib.ChartData
         public string Title { get; set; }
         public string Subtitle { get; set; }
 
+        // offset = RealTime - (240000/BPM)
+        // RealTime = offset + (240000/BPM)
         /// <summary>
         /// In ms.
         /// </summary>

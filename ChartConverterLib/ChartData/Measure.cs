@@ -97,6 +97,8 @@ namespace ChartConverterLib.ChartData
             }
         }
 
+        // offset = RealTime - (240000/BPM)
+        // RealTime = offset + (240000/BPM)
         public float Offset { get; set; }
 
         public bool isBarline { get; set; }
