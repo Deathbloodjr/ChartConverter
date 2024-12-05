@@ -16,7 +16,7 @@ namespace ChartConverterLib
             int offset = 0x1B0;
             var Bytes = File.ReadAllBytes(FilePath);
 
-            //Chart.HasDivergePaths = BitConverter.ToBoolean(Bytes, offset);
+            chart.HasDivergePaths = BitConverter.ToBoolean(Bytes, offset);
             offset += 0x04;
             //Chart.MaxHP = BitConverter.ToInt32(Bytes, offset);
             offset += 0x04;
@@ -78,9 +78,10 @@ namespace ChartConverterLib
                 Measure.isBarline = BitConverter.ToBoolean(Bytes, offset);
                 offset += 0x03 + (0x04 * 7);
 
+                // Normal Branch
                 var NumNotes = BitConverter.ToInt16(Bytes, offset);
                 offset += 0x04;
-                Measure.Scroll = BitConverter.ToSingle(Bytes, offset);
+                Measure.ScrollSpeed = BitConverter.ToSingle(Bytes, offset);
                 offset += 0x04;
 
                 for (int i = 0; i < NumNotes; i++)
@@ -92,8 +93,40 @@ namespace ChartConverterLib
                     }
                     Measure.Notes.Add(note);
                 }
+
+                // Professional Branch
+                NumNotes = BitConverter.ToInt16(Bytes, offset);
+                offset += 0x04;
+                Measure.ProfScrollSpeed = BitConverter.ToSingle(Bytes, offset);
+                offset += 0x04;
+
+                for (int i = 0; i < NumNotes; i++)
+                {
+                    var note = ReadNote(Bytes, ref offset);
+                    if (note == null)
+                    {
+                        return null;
+                    }
+                    Measure.ProfBranchNotes.Add(note);
+                }
+
+                // Master Branch
+                NumNotes = BitConverter.ToInt16(Bytes, offset);
+                offset += 0x04;
+                Measure.MasterScrollSpeed = BitConverter.ToSingle(Bytes, offset);
+                offset += 0x04;
+
+                for (int i = 0; i < NumNotes; i++)
+                {
+                    var note = ReadNote(Bytes, ref offset);
+                    if (note == null)
+                    {
+                        return null;
+                    }
+                    Measure.MasterBranchNotes.Add(note);
+                }
+
                 // This is assuming no branch paths, which I want to ignore anyway because I'm lazy
-                offset += (0x04 * 4);
                 return Measure;
             }
             catch (Exception)
@@ -171,7 +204,7 @@ namespace ChartConverterLib
         }
         public void AddCorrectTimeSignatures(Chart chart, bool highAccuracy = false)
         {
-            Utility.AddCorrectTimeSignatures(chart, highAccuracy);
+            Utility.AddCorrectTimeSignatures(chart, true);
         }
         public void AddNoteInfo(Chart chart)
         {
@@ -190,6 +223,7 @@ namespace ChartConverterLib
         int numMeasures = 0;
         public void WriteFumen(string FilePath, Chart chart)
         {
+            numMeasures = 0;
             List<byte> Bytes = new List<byte>();
 
             #region Header Bytes
@@ -484,7 +518,14 @@ namespace ChartConverterLib
                     }
                 }
                 var noteBytes = WriteNote(measure.Notes[i], noteOffset);
-                noteOffset += ((60000 * (measure.MeasureTop / (float)measure.MeasureBottom) * 4) / measure.Notes[startIndex].BPM) * (1 / (float)measure.Notes.Count);
+                if (measure.Notes[i].Offset != 0)
+                {
+                    noteOffset = measure.Notes[i].Offset;
+                }
+                else
+                {
+                    noteOffset += ((60000 * (measure.MeasureTop / (float)measure.MeasureBottom) * 4) / measure.Notes[startIndex].BPM) * (1 / (float)measure.Notes.Count);
+                }
                 if (noteBytes != null)
                 {
                     numNotes++;
@@ -495,6 +536,8 @@ namespace ChartConverterLib
                 }
             }
 
+            // offset = RealTime - (240000/BPM)
+            // RealTime = offset + (240000/BPM)
             offset += ((240000 / measure.Notes[startIndex].BPM) + ((240000 / measure.Notes[startIndex].BPM) * ((measure.MeasureTop / (float)measure.MeasureBottom) * ((measure.Notes.Count - startIndex) / (float)measure.Notes.Count))) - (240000 / nextBPM));
 
             for (int k = 0; k < 2; k++)
@@ -596,6 +639,10 @@ namespace ChartConverterLib
             }
 
             var tmpBytes = BitConverter.GetBytes(offset);
+            if (note.Offset != 0)
+            {
+                tmpBytes = BitConverter.GetBytes(offset);
+            }
             for (int i = 0; i < tmpBytes.Length; i++)
             {
                 Bytes.Add(tmpBytes[i]);
@@ -643,6 +690,75 @@ namespace ChartConverterLib
             }
 
             return Bytes;
+        }
+    
+        public void AdjustFumenOffset(string fumenFilePath, float newStartingOffset)
+        {
+            if (!File.Exists(fumenFilePath))
+            {
+                return;
+            }
+
+            float offsetAdjustment = 0;
+
+            var bytes = File.ReadAllBytes(fumenFilePath);
+            int offset = 0x200;
+            var numMeasures = BitConverter.ToInt32(bytes, offset);
+            offset += 0x08;
+            for (int i = 0; i < numMeasures; i++)
+            {
+                // bpm
+                offset += 0x04;
+                // measureOffset
+                var measureOffset = BitConverter.ToSingle(bytes, offset);
+                if (i == 0)
+                {
+                    offsetAdjustment = newStartingOffset - measureOffset;
+                }
+                var tmpBytes = BitConverter.GetBytes(measureOffset + offsetAdjustment);
+                for (int j = 0; j < tmpBytes.Length; j++)
+                {
+                    bytes[offset + j] = tmpBytes[j];
+                }
+                offset += 0x04; 
+                // isGoGo
+                offset += 0x01;
+                // isBarline + dummy data
+                offset += 0x03 + (0x04 * 7);
+
+                var NumNotes = BitConverter.ToInt16(bytes, offset);
+                offset += 0x04;
+                // scrollSpeed;
+                offset += 0x04;
+
+                for (int j = 0; j < NumNotes; j++)
+                {
+                    ReadNote(bytes, ref offset);
+                }
+
+                NumNotes = BitConverter.ToInt16(bytes, offset);
+                offset += 0x04;
+                // scrollSpeed;
+                offset += 0x04;
+
+                for (int j = 0; j < NumNotes; j++)
+                {
+                    ReadNote(bytes, ref offset);
+                }
+
+                NumNotes = BitConverter.ToInt16(bytes, offset);
+                offset += 0x04;
+                // scrollSpeed;
+                offset += 0x04;
+
+                for (int j = 0; j < NumNotes; j++)
+                {
+                    ReadNote(bytes, ref offset);
+                }
+            }
+
+            File.Move(fumenFilePath, fumenFilePath + ".bak");
+            File.WriteAllBytes(fumenFilePath, bytes);
         }
     }
 }

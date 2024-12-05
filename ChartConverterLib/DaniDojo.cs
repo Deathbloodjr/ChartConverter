@@ -290,9 +290,9 @@ namespace ChartConverterLib
                         TJAFileText.Add("#GOGOEND");
                     }
                 }
-                if (chart.Measures[0].Scroll != prevScroll)
+                if (chart.Measures[0].ScrollSpeed != prevScroll)
                 {
-                    TJAFileText.Add("#SCROLL " + chart.Measures[0].Scroll);
+                    TJAFileText.Add("#SCROLL " + chart.Measures[0].ScrollSpeed);
                 }
                 // I wouldn't need this check if I used [MeasureStart] for the initial BPM, but it doesn't matter either way
                 if (chart.Measures[0].BPM != prevBPM)

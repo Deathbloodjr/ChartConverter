@@ -25,23 +25,93 @@ namespace ChartConverter
             Fumen fumen = new Fumen();
             DaniDojo daniDojo = new DaniDojo();
 
-            //var chart = fumen.ReadFumen(@"D:\Taiko no Tatsujin PC\BepInEx\plugins\TakoTako\customSongs\Nijiiro_Songs\clsh69\clsh69_m.bin", true);
-            //var chart = fumen.ReadFumen(@"D:\Taiko no Tatsujin PC\BepInEx\plugins\TakoTako\customSongs\Nijiiro_Songs\kooryu\kooryu_x.bin", true);
+            //ConvertPNGsInNewToTJA();
+
+            //fumen.AdjustFumenOffset(@"D:\Downloads\New\Emma Ura.bin", 891.280029296875f);
+            //var result = chart.GetPointsAndScore();
+
+            //var chart = fumen.ReadFumen(@"D:\Taiko no Tatsujin PC\BepInEx\data\TakoTako\customSongs\Nijiiro_Songs\glyhow\glyhow_m.bin", false);
+            //var result = chart.GetPointsAndScore();
+            //Console.ReadLine();
             //tja.WriteTJA(@"D:\Downloads\New\kooryu.tja", chart);
+
+            //AddUraChartToTDM(@"D:\Downloads\New\Aloft in the wind（裏譜面）.tja", "aloft", 1280);
+            //AddUraChartToTDM(@"D:\Downloads\New\Hello, Worldooon!!（裏譜面）.tja", "worldn", 1053.5f);
+            //AddUraChartToTDM(@"D:\Downloads\New\Mood Swing(裏譜面).tja", "moodsw", 96);
+            //AddUraChartToTDM(@"D:\Downloads\New\アンリミテッドゲームズ(裏譜面).tja", "unlmtg", 106.8f);
+            //AddUraChartToTDM(@"D:\Downloads\New\仮想現実のテレスコープ（裏譜面）.tja", "telesc", 1468);
+            //AddUraChartToTDM(@"D:\Downloads\New\最果の魔法使い（裏譜面）.tja", "shmaho", 199);
+
+
 
             //var chart = donScore.ReadDonScore(@"D:\Downloads\New\love ura.png");
             //tja.WriteTJA(@"D:\Downloads\New\love ura.tja", chart);
-            //AddUraChartToTDM(@"D:\Downloads\New\love ura.tja", "lov193", @"D:\Taiko no Tatsujin PC\BepInEx\plugins\TakoTako\customSongs\Nijiiro_Songs\lov193\lov193_m.bin");
+
+            //var songId = "doncam";
+            //var difficulty = Difficulty.Oni;
+            //var customSongsDir = @"D:\Taiko no Tatsujin PC\BepInEx\data\TakoTako\customSongs";
+            //DirectoryInfo dirInfo = new DirectoryInfo(customSongsDir);
+            //var subDirs = dirInfo.GetDirectories(songId, SearchOption.AllDirectories);
+            //var chartFileName = songId;
+            //switch (difficulty)
+            //{
+            //    case Difficulty.Easy:
+            //        chartFileName += "_e.bin";
+            //        break;
+            //    case Difficulty.Normal:
+            //        chartFileName += "_n.bin";
+            //        break;
+            //    case Difficulty.Hard:
+            //        chartFileName += "_h.bin";
+            //        break;
+            //    case Difficulty.Oni:
+            //        chartFileName += "_m.bin";
+            //        break;
+            //    case Difficulty.Ura:
+            //        chartFileName += "_x.bin";
+            //        break;
+            //}
+            //if (subDirs.Length > 0)
+            //{
+            //    var chartFiles = subDirs[0].GetFiles(chartFileName);
+            //    if (chartFiles.Length > 0)
+            //    {
+            //        var chart = fumen.ReadFumen(chartFiles[0].FullName);
+            //        List<(float measureTime, float noteTime, string type, float bpm)> data = new List<(float measureTime, float noteTime, string type, float bpm)>();
+            //        for (int i = 0; i < chart.Measures.Count; i++)
+            //        {
+            //            var measure = chart.Measures[i];
+            //            for (int j = 0; j < measure.Notes.Count; j++)
+            //            {
+            //                var note = measure.Notes[j];
+            //                if (note.Type != NoteType.None && note.Type != NoteType.DrumrollEnd)
+            //                {
+            //                    data.Add((measure.Offset, note.Offset, note.Type.ToString(), measure.BPM));
+            //                }
+            //            }
+            //        }
+            //        List<string> output = new List<string>();
+            //        for (int i = 0; i < data.Count; i++)
+            //        {
+            //            output.Add(data[i].measureTime.ToString() + "\t" + data[i].noteTime.ToString() + "\t" + data[i].type + "\t" + data[i].bpm);
+            //        }
+            //        File.WriteAllLines(@"D:\Taiko no Tatsujin PC Debug\BepInEx\" + chartFileName + "_NoteTimes.txt", output);
+
+            //    }
+            //}
 
 
-            //ConvertPNGsInNewToTJA();
+
 
             //var chart = tja.ReadTJA(@"D:\Downloads\New\カルメン 組曲一番終曲(裏譜面) (裏).tja", Difficulty.Ura);
             //fumen.WriteFumen(@"D:\Downloads\New\カルメン 組曲一番終曲(裏譜面) (裏).bin", chart);
 
-            //AddUraChartToTDM(@"D:\Downloads\New\カルメン 組曲一番終曲(裏譜面) (裏).tja", "clsca2", 28.2880001068115f);
+            //AddUraChartToTDM(@"D:\Downloads\New\Re：End of a Dream\Re：End of a Dream.tja", "mmaeod", 1181.92395019531f);
 
-            ConvertPNGsInNewToTJA();
+            //var chart = fumen.ReadFumen(@"D:\Taiko no Tatsujin PC\BepInEx\data\AddUraToBaseGameSong\opng2\opng2_x.bin");
+            //var points = chart.GetPointsAndScore();
+
+            //ConvertPNGsInNewToTJA();
 
 
             //var chart = tja.ReadTJA(@"D:\Downloads\New\そして勇者は眠りにつく.tja", Difficulty.Ura);
@@ -67,6 +137,7 @@ namespace ChartConverter
             //var newChart = donScore.ReadDonScore(@"D:\Downloads\New\vt1op.png");
             //tja.WriteTJA(@"D:\Downloads\New\vt1op.tja", newChart);
 
+            //AddUraChartToTDM(@"D:\Downloads\New\めためた☆ゆにば～すっ！ (裏).tja", "metamt", 116.667999267578f);
             //AddUraChartToTDM(@"D:\Downloads\New\vt1op.tja", "vt1op", 245.520004272461f);
 
             //string filePath = @"D:\Downloads\New\Let's 貢献！～恋の懲役は1,000,000年～─.tja";

@@ -75,7 +75,7 @@ namespace ChartConverterLib
             File.Move(outputFilePath, FilePath);
         }
 
-        public static void AddCorrectTimeSignatures(Chart chart, bool highAccuracy = false)
+        public static void AddCorrectTimeSignatures(Chart chart, bool fumenCalculation = false)
         {
             for (int i = 0; i < chart.Measures.Count - 1; i++)
             {
@@ -96,8 +96,9 @@ namespace ChartConverterLib
                     continue;
                 }
 
-                int precision = 1000;
+                int precision = 10000;
 
+                
                 var GCF = GCD((int)(timeSignatureRatio * precision), precision);
                 int measureTop = (int)((timeSignatureRatio * precision) / GCF);
                 int measureBottom = (int)(precision / GCF);
@@ -106,7 +107,7 @@ namespace ChartConverterLib
                 //int measureBottom = (int)Math.Round(measureTop / timeSignatureRatio);
 
                 // This part probably isn't actually needed, but 4/4 is sorta standard for time signatures
-                if (measureTop == 1 && measureBottom == 1)
+                if (measureTop == measureBottom)
                 {
                     measureTop = 4;
                     measureBottom = 4;
@@ -114,8 +115,6 @@ namespace ChartConverterLib
 
                 chart.Measures[i].MeasureTop = measureTop;
                 chart.Measures[i].MeasureBottom = measureBottom;
-
-                
             }
         }
 
@@ -142,36 +141,42 @@ namespace ChartConverterLib
                 int divisor = 1;
                 float interval = measureLength / divisor;
 
-                while (true)
+                List<double> values = new List<double>();
+
+                int numAttempts = 100;
+                while (numAttempts > 0)
                 {
+                    List<double> currentDivisorValues = new List<double>();
+                    numAttempts--;
                     interval = measureLength / divisor;
                     bool failed = false;
+
                     for (int j = 0; j < offsets.Count; j++)
                     {
                         var value = Math.Round((offsets[j] / interval), 2) % 1;
-                        if (fullAccuracy)
+                        if (value > 0.5)
                         {
-                            if (value > 0.01 && value < 0.99)
-                            {
-                                divisor++;
-                                failed = true;
-                                break;
-                            }
+                            value = 1 - value;
                         }
-                        else
+                        currentDivisorValues.Add(value);
+
+                        if (value > 0.01 && value < 0.99)
                         {
-                            if (value > 0.05 && value < 0.95)
-                            {
-                                divisor++;
-                                failed = true;
-                                break;
-                            }
+                            divisor++;
+                            failed = true;
+                            break;
                         }
                     }
                     if (!failed)
                     {
                         break;
                     }
+                    values.Add(currentDivisorValues.Max());
+                }
+
+                if (numAttempts <= 0)
+                {
+                    divisor = values.IndexOf(values.Min()) + 1;
                 }
 
                 chart.Measures[i].Notes.Clear();
@@ -253,7 +258,7 @@ namespace ChartConverterLib
                         drumrollEndNote.Offset = realDrumrollEndTime - chart.Measures[drumrollEndMeasure].Offset;
 
                         drumrollEndNote.isGoGo = chart.Measures[drumrollEndMeasure].isGoGo;
-                        drumrollEndNote.Scroll = chart.Measures[drumrollEndMeasure].Scroll;
+                        drumrollEndNote.Scroll = chart.Measures[drumrollEndMeasure].ScrollSpeed;
 
                         if (chart.Measures[drumrollEndMeasure].Notes.Count == 0)
                         {
@@ -295,7 +300,7 @@ namespace ChartConverterLib
                 for (int j = 0; j < chart.Measures[i].Notes.Count; j++)
                 {
                     chart.Measures[i].Notes[j].BPM = chart.Measures[i].BPM;
-                    chart.Measures[i].Notes[j].Scroll = chart.Measures[i].Scroll;
+                    chart.Measures[i].Notes[j].Scroll = chart.Measures[i].ScrollSpeed;
                     chart.Measures[i].Notes[j].isGoGo = chart.Measures[i].isGoGo;
                 }
             }
@@ -303,8 +308,10 @@ namespace ChartConverterLib
 
         private static int GCD(int a, int b)
         {
-            while (a != 0 && b != 0)
+            int numAttempts = 100000;
+            while (a != 0 && b != 0 && numAttempts > 0)
             {
+                numAttempts--;
                 if (a > b)
                     a %= b;
                 else

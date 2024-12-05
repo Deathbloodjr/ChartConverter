@@ -249,7 +249,7 @@ namespace ChartConverterLib
             // Chart Data Next
             Measure measure = new Measure();
             measure.BPM = BPM;
-            measure.Scroll = Scroll;
+            measure.ScrollSpeed = Scroll;
             measure.isGoGo = isGoGo;
             measure.isBarline = isBarline;
 
@@ -307,7 +307,7 @@ namespace ChartConverterLib
                     {
                         measure.isBarline = isBarline;
                         measure.isGoGo = isGoGo;
-                        measure.Scroll = Scroll;
+                        measure.ScrollSpeed = Scroll;
                         measure.BPM = BPM;
                         measure.MeasureTop = measureTop;
                         measure.MeasureBottom = measureBottom;
@@ -363,7 +363,7 @@ namespace ChartConverterLib
                                 chart.Measures.Add(measure);
                                 measure = new Measure();
                                 measure.BPM = BPM;
-                                measure.Scroll = Scroll;
+                                measure.ScrollSpeed = Scroll;
                                 measure.isGoGo = isGoGo;
                                 measure.isBarline = isBarline;
                                 measure.MeasureTop = measureTop;
@@ -546,9 +546,9 @@ namespace ChartConverterLib
             }
             if (ScrollSpeedChanges)
             {
-                if (chart.Measures[MeasureStart].Scroll != 1)
+                if (chart.Measures[MeasureStart].ScrollSpeed != 1)
                 {
-                    TJAFileText.Add("#SCROLL " + chart.Measures[MeasureStart].Scroll);
+                    TJAFileText.Add("#SCROLL " + chart.Measures[MeasureStart].ScrollSpeed);
                 }
             }
             // I wouldn't need this check if I used [MeasureStart] for the initial BPM, but it doesn't matter either way

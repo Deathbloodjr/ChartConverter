@@ -17,7 +17,7 @@ namespace ChartConverterLib
             if (FilePath.EndsWith(".png"))
             {
                 var donScoreLines = GetDonScoreStringFromPNG(FilePath);
-                if (donScoreLines.Count == 0 || donScoreLines == null)
+                if (donScoreLines == null || donScoreLines.Count == 0)
                 {
                     return null;
                 }
@@ -187,7 +187,7 @@ namespace ChartConverterLib
 
             Measure measure = new Measure();
             measure.BPM = measureParameters.BPM;
-            measure.Scroll = measureParameters.Scroll;
+            measure.ScrollSpeed = measureParameters.Scroll;
             measure.MeasureTop = measureParameters.MeasureTop;
             measure.MeasureBottom = measureParameters.MeasureBottom;
             measure.isBarline = measureParameters.isBarline;
@@ -205,7 +205,7 @@ namespace ChartConverterLib
                     measures.Add(measure);
                     measure = new Measure();
                     measure.BPM = measureParameters.BPM;
-                    measure.Scroll = measureParameters.Scroll;
+                    measure.ScrollSpeed = measureParameters.Scroll;
                     measure.MeasureTop = measureParameters.MeasureTop;
                     measure.MeasureBottom = measureParameters.MeasureBottom;
                     measure.isBarline = measureParameters.isBarline;
@@ -630,9 +630,9 @@ namespace ChartConverterLib
             {
                 TXTFileText.Add("#begingogo");
             }
-            if (chart.Measures[0].Scroll != 1)
+            if (chart.Measures[0].ScrollSpeed != 1)
             {
-                TXTFileText.Add("#hs " + chart.Measures[0].Scroll);
+                TXTFileText.Add("#hs " + chart.Measures[0].ScrollSpeed);
             }
             chart.Measures[0].AdjustForBalloons();
             int BeatChar = chart.Measures[0].GetBeatChar();
@@ -667,7 +667,7 @@ namespace ChartConverterLib
                 {
                     // This is ugly
                     if (chart.Measures[i].BPM != chart.Measures[i-1].Notes[chart.Measures[i - 1].Notes.Count - 1].BPM ||
-                        chart.Measures[i].Scroll != chart.Measures[i - 1].Notes[chart.Measures[i - 1].Notes.Count - 1].Scroll ||
+                        chart.Measures[i].ScrollSpeed != chart.Measures[i - 1].Notes[chart.Measures[i - 1].Notes.Count - 1].Scroll ||
                         chart.Measures[i].isBarline != chart.Measures[i - 1].isBarline ||
                         chart.Measures[i].isGoGo != chart.Measures[i - 1].Notes[chart.Measures[i - 1].Notes.Count - 1].isGoGo ||
                         chart.Measures[i].MeasureTop != chart.Measures[i - 1].MeasureTop ||
@@ -693,9 +693,9 @@ namespace ChartConverterLib
                         {
                             TXTFileText.Add("#meter " + chart.Measures[i].MeasureBottom + " " + chart.Measures[i].MeasureTop);
                         }
-                        if (chart.Measures[i].Scroll != chart.Measures[i-1].Notes[chart.Measures[i-1].Notes.Count - 1].Scroll)
+                        if (chart.Measures[i].ScrollSpeed != chart.Measures[i-1].Notes[chart.Measures[i-1].Notes.Count - 1].Scroll)
                         {
-                            TXTFileText.Add("#hs " + chart.Measures[i].Scroll);
+                            TXTFileText.Add("#hs " + chart.Measures[i].ScrollSpeed);
                         }
                         if (chart.Measures[i].BPM != chart.Measures[i - 1].Notes[chart.Measures[i - 1].Notes.Count - 1].BPM)
                         {

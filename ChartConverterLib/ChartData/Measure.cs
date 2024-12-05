@@ -9,7 +9,11 @@ namespace ChartConverterLib.ChartData
     public class Measure
     {
         public List<Note> Notes { get; set; }
-        public int NoteCount { get {
+        public List<Note> ProfBranchNotes { get; set; }
+        public List<Note> MasterBranchNotes { get; set; }
+        public int NoteCount { 
+            get 
+            {
                 int count = 0;
                 for (int j = 0; j < Notes.Count; j++)
                 {
@@ -32,22 +36,85 @@ namespace ChartConverterLib.ChartData
                     }
                 }
                 return count;
-            } }
+            } 
+        }
+
+        public int ProfessionalNoteCount
+        {
+            get
+            {
+                int count = 0;
+                for (int j = 0; j < ProfBranchNotes.Count; j++)
+                {
+                    if (ProfBranchNotes[j].Type == NoteType.Don || ProfBranchNotes[j].Type == NoteType.BigDon ||
+                        ProfBranchNotes[j].Type == NoteType.Kat || ProfBranchNotes[j].Type == NoteType.BigKat)
+                    {
+                        count += 1;
+                    }
+                    //if (Notes[j].Type != NoteType.Balloon && Notes[j].Type != NoteType.Drumroll
+                    //    && Notes[j].Type != NoteType.BigDrumroll && Notes[j].Type != NoteType.DrumrollEnd && Notes[j].Type != NoteType.None)
+                    //{
+                    //    count += 1;
+                    //}
+                    else
+                    {
+                        if (ProfBranchNotes[j].Type != NoteType.None)
+                        {
+                            var tmp = ProfBranchNotes[j].Type;
+                        }
+                    }
+                }
+                return count;
+            }
+        }
+
+        public int MasterNoteCount
+        {
+            get
+            {
+                int count = 0;
+                for (int j = 0; j < MasterBranchNotes.Count; j++)
+                {
+                    if (MasterBranchNotes[j].Type == NoteType.Don || MasterBranchNotes[j].Type == NoteType.BigDon ||
+                        MasterBranchNotes[j].Type == NoteType.Kat || MasterBranchNotes[j].Type == NoteType.BigKat)
+                    {
+                        count += 1;
+                    }
+                    //if (Notes[j].Type != NoteType.Balloon && Notes[j].Type != NoteType.Drumroll
+                    //    && Notes[j].Type != NoteType.BigDrumroll && Notes[j].Type != NoteType.DrumrollEnd && Notes[j].Type != NoteType.None)
+                    //{
+                    //    count += 1;
+                    //}
+                    else
+                    {
+                        if (MasterBranchNotes[j].Type != NoteType.None)
+                        {
+                            var tmp = MasterBranchNotes[j].Type;
+                        }
+                    }
+                }
+                return count;
+            }
+        }
 
         public float Offset { get; set; }
 
         public bool isBarline { get; set; }
         public bool isGoGo { get; set; }
         public float BPM { get; set; }
-        public float Scroll { get; set; }
+        public float ScrollSpeed { get; set; }
+        public float ProfScrollSpeed { get; set; }
+        public float MasterScrollSpeed { get; set; }
 
         public int MeasureTop { get; set; }
         public int MeasureBottom { get; set; }
         public Measure()
         {
             Notes = new List<Note>();
+            ProfBranchNotes = new List<Note>();
+            MasterBranchNotes = new List<Note>();
             isBarline = true;
-            Scroll = 1.0f;
+            ScrollSpeed = 1.0f;
             MeasureTop = 4;
             MeasureBottom = 4;
             BPM = 180;
@@ -129,7 +196,7 @@ namespace ChartConverterLib.ChartData
                         // I don't think it should ever go in here
                         // I'll set the parameters to the base measure parameters
                         note.BPM = BPM;
-                        note.Scroll = Scroll;
+                        note.Scroll = ScrollSpeed;
                         note.isGoGo = isGoGo;
                     }
                     else

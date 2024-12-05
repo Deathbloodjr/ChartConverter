@@ -26,6 +26,7 @@ namespace ChartConverterLib.ChartData
         public string Level { get; set; }
         public Difficulty Difficulty { get; set; }
         public Genre Genre { get; set; }
+        public bool HasDivergePaths { get; set; }
 
         // These are useless for TJA
         public string Wave { get; set; }
@@ -36,7 +37,14 @@ namespace ChartConverterLib.ChartData
                 int count = 0;
                 for (int i = 0; i < Measures.Count; i++)
                 {
-                    count += Measures[i].NoteCount;
+                    if (HasDivergePaths)
+                    {
+                        count += Measures[i].MasterNoteCount;
+                    }
+                    else
+                    {
+                        count += Measures[i].NoteCount;
+                    }
                     //for (int j = 0; j < Measures[i].Notes.Count; j++)
                     //{
                     //    if (Measures[i].Notes[j].Type != NoteType.Balloon && Measures[i].Notes[j].Type != NoteType.Drumroll
