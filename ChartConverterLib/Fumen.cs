@@ -521,15 +521,15 @@ namespace ChartConverterLib
                         return Bytes;
                     }
                 }
-                var noteBytes = WriteNote(measure.Notes[i], noteOffset);
                 if (measure.Notes[i].Offset != 0)
                 {
                     noteOffset = measure.Notes[i].Offset;
                 }
-                else
-                {
-                    noteOffset += ((60000 * (measure.MeasureTop / (float)measure.MeasureBottom) * 4) / measure.Notes[startIndex].BPM) * (1 / (float)measure.Notes.Count);
-                }
+                var noteBytes = WriteNote(measure.Notes[i], noteOffset);
+                //else
+                //{
+                //    noteOffset += ((60000 * (measure.MeasureTop / (float)measure.MeasureBottom) * 4) / measure.Notes[startIndex].BPM) * (1 / (float)measure.Notes.Count);
+                //}
                 if (noteBytes != null)
                 {
                     numNotes++;
